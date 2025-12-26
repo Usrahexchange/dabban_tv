@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dabban TV - News Portal</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8rem;
+            color: #fff !important;
+        }
+        
+        .hero-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .news-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .category-btn {
+            margin: 0.2rem;
+            border-radius: 20px;
+        }
+        
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+        }
+        
+        .error-alert {
+            display: none;
+        }
+        
+        .search-box {
+            max-width: 400px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-banner {
+                padding: 2rem 0;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-newspaper me-2"></i>Dabban TV
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active category-link" href="#" data-category="general">Home</a></li>
+                    <li class="nav-item"><a class="nav-link category-link" href="#" data-category="world">World</a></li>
+                    <li class="nav-item"><a class="nav-link category-link" href="#" data-category="nation">Nation</a></li>
+                    <li class="nav-item"><a class="nav-link category-link" href="#" data-category="business">Business</a></li>
+                    <li class="nav-item"><a class="nav-link category-link" href="#" data-category="technology">Technology</a></li>
+                    <li class="nav-item"><a class="nav-link category-link" href="#" data-category="entertainment">Entertainment</a></li>
+                    <li class="nav-item"><a class="nav-link category-link" href="#" data-category="sports">Sports</a></li>
+                    <li class="nav-item"><a class="nav-link category-link" href="#" data-category="science">Science</a></li>
+                </ul>
+                <div class="d-flex search-box">
+                    <input type="text" class="form-control me-2" id="searchInput" placeholder="Search news...">
+                    <button class="btn btn-outline-light" id="searchBtn">Search</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Stay Informed with Dabban TV</h1>
+            <p class="lead">Latest news from around the world, updated regularly</p>
+            <div class="mt-4">
+                <button class="btn btn-light btn-lg mx-2 category-link" data-category="general">Latest News</button>
+                <button class="btn btn-outline-light btn-lg mx-2 category-link" data-category="technology">Tech News</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Category Buttons -->
+        <div class="my-4 text-center">
+            <button class="btn btn-outline-primary category-btn category-link" data-category="general">General</button>
+            <button class="btn btn-outline-primary category-btn category-link" data-category="world">World</button>
+            <button class="btn btn-outline-primary category-btn category-link" data-category="nation">Nation</button>
+            <button class="btn btn-outline-success category-btn category-link" data-category="business">Business</button>
+            <button class="btn btn-outline-info category-btn category-link" data-category="technology">Technology</button>
+            <button class="btn btn-outline-warning category-btn category-link" data-category="entertainment">Entertainment</button>
+            <button class="btn btn-outline-danger category-btn category-link" data-category="sports">Sports</button>
+            <button class="btn btn-outline-dark category-btn category-link" data-category="science">Science</button>
+        </div>
+
+        <!-- Current Category Title -->
+        <div class="row mb-4">
+            <div class="col">
+                <h2 id="currentCategory" class="border-bottom pb-2">Latest News</h2>
+                <p id="newsCount" class="text-muted">Loading news...</p>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="text-center my-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Fetching latest news...</p>
+        </div>
+
+        <!-- Error Alert -->
+        <div id="errorAlert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+            <strong>Error!</strong> <span id="errorMessage">Failed to load news. Please try again later.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- News Articles Container -->
+        <div id="newsContainer" class="row">
+            <!-- News cards will be dynamically inserted here -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="text-center my-5 d-none">
+            <div class="alert alert-warning">
+                <h4>No news articles found</h4>
+                <p>Try a different category or search term</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Dabban TV</h5>
+                    <p>Your trusted source for news and information from around the world.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2025 Dabban TV. All rights reserved.</p>
+                    <p>Powered by GNews API</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get a FREE API key from https://gnews.io/ (100 requests per day free)
+        // Replace with your own GNews API key
+        const GNEWS_API_KEY = "17f0dc6bda230c29918be66bd7c80ac2"; // This is a sample key - get your own from gnews.io
+        
+        // API Configuration
+        const API_CONFIG = {
+            baseUrl: 'https://gnews.io/api/v4',
+            endpoints: {
+                topHeadlines: '/top-headlines',
+                search: '/search'
+            }
+        };
+
+        // DOM Elements
+        const newsContainer = document.getElementById('newsContainer');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessage = document.getElementById('errorMessage');
+        const noResults = document.getElementById('noResults');
+        const currentCategory = document.getElementById('currentCategory');
+        const newsCount = document.getElementById('newsCount');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        
+        // Current state
+        let currentCategoryType = 'general';
+        let currentSearchTerm = '';
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial news
+            fetchNews('general', 'Latest News');
+            
+            // Setup category buttons
+            document.querySelectorAll('.category-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('data-category');
+                    const categoryName = this.textContent;
+                    
+                    // Update active state
+                    document.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Fetch news for category
+                    fetchNews(category, categoryName + ' News');
+                    currentCategoryType = category;
+                    currentSearchTerm = '';
+                    searchInput.value = '';
+                });
+            });
+            
+            // Setup search
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        });
+
+        // Fetch news from GNews API
+        async function fetchNews(category, categoryDisplayName) {
+            try {
+                // Show loading, hide previous content
+                showLoading();
+                hideError();
+                hideNoResults();
+                clearNewsContainer();
+                
+                // Update UI
+                currentCategory.textContent = categoryDisplayName;
+                newsCount.textContent = 'Loading...';
+                
+                // Build API URL
+                let apiUrl = '';
+                if (currentSearchTerm) {
+                    // Search mode
+                    apiUrl = `${API_CONFIG.baseUrl}${API_CONFIG.endpoints.search}?q=${encodeURIComponent(currentSearchTerm)}&lang=en&max=20&apikey=${GNEWS_API_KEY}`;
+                } else {
+                    // Category mode
+                    apiUrl = `${API_CONFIG.baseUrl}${API_CONFIG.endpoints.topHeadlines}?category=${category}&lang=en&max=20&apikey=${GNEWS_API_KEY}`;
+                }
+                
+                console.log('Fetching from:', apiUrl);
+                
+                // Fetch data
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Hide loading
+                hideLoading();
+                
+                // Check if we have articles
+                if (data.articles && data.articles.length > 0) {
+                    displayNews(data.articles);
+                    newsCount.textContent = `Showing ${data.articles.length} news articles`;
+                } else {
+                    showNoResults();
+                    newsCount.textContent = 'No articles found';
+                }
+                
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                hideLoading();
+                showError('Failed to load news. Please check your internet connection and try again.');
+                newsCount.textContent = 'Error loading news';
+            }
+        }
+
+        // Display news articles
+        function displayNews(articles) {
+            clearNewsContainer();
+            
+            articles.forEach(article => {
+                const articleCard = createNewsCard(article);
+                newsContainer.appendChild(articleCard);
+            });
+        }
+
+        // Create a news card element
+        function createNewsCard(article) {
+            // Create column
+            const col = document.createElement('div');
+            col.className = 'col-md-6 col-lg-4 mb-4';
+            
+            // Format date
+            const publishedDate = article.publishedAt ? 
+                new Date(article.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 
+                'Date not available';
+            
+            // Create card HTML
+            col.innerHTML = `
+                <div class="card news-card h-100">
+                    ${article.image ? 
+                        `<img src="${article.image}" class="card-img-top" alt="${article.title}" onerror="this.src='https://via.placeholder.com/400x200/cccccc/969696?text=No+Image'">` :
+                        `<div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <span class="text-white">No Image Available</span>
+                        </div>`
+                    }
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">${article.title || 'No Title'}</h5>
+                        <p class="card-text flex-grow-1">${article.description || 'No description available.'}</p>
+                        <div class="mt-auto">
+                            <p class="text-muted"><small>${publishedDate}</small></p>
+                            <p class="text-muted"><small>Source: ${article.source?.name || 'Unknown'}</small></p>
+                            <a href="${article.url || '#'}" target="_blank" class="btn btn-primary w-100">Read Full Article</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return col;
+        }
+
+        // Search function
+        function performSearch() {
+            const searchTerm = searchInput.value.trim();
+            
+            if (searchTerm) {
+                currentSearchTerm = searchTerm;
+                currentCategoryType = 'search';
+                fetchNews('general', `Search Results: "${searchTerm}"`);
+            } else {
+                // If search is empty, go back to current category
+                currentSearchTerm = '';
+                fetchNews(currentCategoryType, getCategoryName(currentCategoryType));
+            }
+        }
+
+        // Helper function to get category display name
+        function getCategoryName(category) {
+            const categoryNames = {
+                'general': 'Latest News',
+                'world': 'World News',
+                'nation': 'National News',
+                'business': 'Business News',
+                'technology': 'Technology News',
+                'entertainment': 'Entertainment News',
+                'sports': 'Sports News',
+                'science': 'Science News'
+            };
+            
+            return categoryNames[category] || category.charAt(0).toUpperCase() + category.slice(1) + ' News';
+        }
+
+        // UI Helper Functions
+        function showLoading() {
+            loadingSpinner.style.display = 'block';
+            newsContainer.style.opacity = '0.5';
+        }
+
+        function hideLoading() {
+            loadingSpinner.style.display = 'none';
+            newsContainer.style.opacity = '1';
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorAlert.classList.remove('d-none');
+        }
+
+        function hideError() {
+            errorAlert.classList.add('d-none');
+        }
+
+        function showNoResults() {
+            noResults.classList.remove('d-none');
+        }
+
+        function hideNoResults() {
+            noResults.classList.add('d-none');
+        }
+
+        function clearNewsContainer() {
+            newsContainer.innerHTML = '';
+        }
+
+        // Add image error handling globally
+        document.addEventListener('error', function(e) {
+            if (e.target.tagName === 'IMG' && e.target.classList.contains('card-img-top')) {
+                e.target.src = 'https://via.placeholder.com/400x200/cccccc/969696?text=Image+Not+Available';
+            }
+        }, true);
+    </script>
+</body>
+</html>
