@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    📌 10) *Live TV Stream Form (set_stream.html)*
+
+```html
+<form action="stream.php?action=set" method="POST">
+  <input type="text" name="title" placeholder="Stream Title"><br>
+  <input type="text" name="url" placeholder="M3U8 or YouTube URL"><br>
+  <button>Save</button>
+</form>
+📌 11) *Public TV Stream Embed (frontend)*
+
+```html
+<div id="player"></div>
+<script>
+fetch("stream.php?action=get")
+  .then(res=>res.json())
+  .then(data=>{
+    document.getElementById("player").innerHTML = `
+      <h3>data.title</h3>
+      <iframe width="100{data.url}" frameborder="0" allowfullscreen></iframe>
+    `;
+  });
+</script>
+
+</body>
+</html>

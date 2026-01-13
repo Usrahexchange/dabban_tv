@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    📌 8) *Admin Dashboard (HTML + PHP)*
+
+admin/dashboard.html
+```html
+<h1>Admin Dashboard</h1>
+<a href="admin_upload_news.html">Post News</a> |
+<a href="fetch_api.php">Fetch Latest News</a> |
+
+<a href="set_stream.html">Set Live TV Stream</a>
+```
+
+---
+
+📌 9) *Upload News Form (admin_upload_news.html)*
+
+```html
+<form action="news.php?action=upload" method="POST">
+  <input type="text" name="title" placeholder="Title"><br>
+  <input type="text" name="category" placeholder="Category"><br>
+  <textarea name="content" placeholder="Content"></textarea><br>
+  <input type="text" name="image" placeholder="Image URL"><br>
+  <button>Upload</button>
+</form>
+
+</body>
+</html>
