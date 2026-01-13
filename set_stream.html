@@ -6,17 +6,14 @@
     <title>Document</title>
 </head>
 <body>
-    📌 10) *Live TV Stream Form (set_stream.html)*
-
-```html
+    <!--📌 10) *Live TV Stream Form (set_stream.html)*
+```html-->
 <form action="stream.php?action=set" method="POST">
-  <input type="text" name="title" placeholder="Stream Title"><br>
-  <input type="text" name="url" placeholder="M3U8 or YouTube URL"><br>
+  <input type="text" name="title" placeholder="DABBAN_TV LIVE"><br>
+  <input type="text" name="url" placeholder="YouTube URL"><br>
   <button>Save</button>
 </form>
-📌 11) *Public TV Stream Embed (frontend)*
-
-```html
+<!--📌 11) *Public TV Stream Embed (frontend)*-->
 <div id="player"></div>
 <script>
 fetch("stream.php?action=get")
@@ -30,4 +27,5 @@ fetch("stream.php?action=get")
 </script>
 
 </body>
+
 </html>
