@@ -1,4 +1,4 @@
-📌 7) *Live TV Stream API (stream.php)*
+<!--📌 7) *Live TV Stream API (stream.php)*
 
 “`php
 <?php
@@ -14,3 +14,5 @@ if (method == "GET" && action == "get")stmt = pdo->prepare("SELECT * FROM stream
 if (method == "POST" && action == "set")title = validate_input(_POST['title']);url = validate_input(_POST['url']);pdo->prepare("INSERT INTO stream_links(title,url) VALUES(?,?)")->execute([title,url]);
     respond(["message"=>"Live stream link saved"]);
 }
+
+?>
