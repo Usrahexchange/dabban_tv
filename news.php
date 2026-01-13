@@ -1,4 +1,4 @@
-📌 6) *News Management API (news.php)*
+<!--📌 6) *News Management API (news.php)*
 
 ```php
 <?php
@@ -31,3 +31,5 @@ news_id = intval(_POST['id']);
 if (method == "DELETE"action == "delete") {
     if (!isset(_SESSION['user'])) respond(["error"=>"Unauthorized"],401);id = intval(_GET['id']);pdo->prepare("DELETE FROM news WHERE id=?")->execute([id]);
     respond(["message"=>"Deleted"]);
+
+?>
