@@ -1,4 +1,4 @@
-📌 3) *Helper Functions (helpers.php)*
+<!--📌 3) *Helper Functions (helpers.php)*
 
 “`php
 <?php
@@ -11,5 +11,6 @@ function respond(data, status = 200)
 
 function validate_input(data) {
     return htmlspecialchars(stripslashes(trim(data)));
-“`
+?>
+
 
