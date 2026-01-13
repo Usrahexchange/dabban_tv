@@ -1,12 +1,12 @@
-📌 5) *News API Fetch Cron Script (fetch_api.php )*
+<!--📌 5) *News API Fetch Cron Script (fetch_api.php )*
 
 “`php
 <?php
 require "config.php";
-require "helpers.php";apiKey = "YOUR_NEWSAPI_KEY";
+require "helpers.php";apiKey = "f94fee94fc0f48b6aa2df2cc5dd25cc2";
 countries = ["ng","us"]; // local + intl
 
-foreach (countries as c)fetch = file_get_contents("https://newsapi.org/v2/top-headlines?country=c   apiKey=apiKey");
+foreach (countries as c)fetch = file_get_contents("https://newsapi.org/v2/top-headlines?country=capiKey=apiKey");
     json = json_decode(fetch, true);
 
     foreach (json['articles'] asa) {
@@ -27,5 +27,5 @@ title = validate_input(a['title']);
     }
 }
 respond(["message"=>"API news updated"]);
-```
+
 
