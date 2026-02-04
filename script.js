@@ -1,5 +1,5 @@
 // ContextualWeb News API Configuration
-        const CONTEXTUAL_API_KEY = "f94fee94fc0f48b6aa2df2cc5dd25cc2";
+        const CONTEXTUAL_API_KEY = "pub_60021a03bef342a99c883123eaf85963";
         
         // Use the CORRECT endpoint for ContextualWeb API
         const API_CONFIG = {
